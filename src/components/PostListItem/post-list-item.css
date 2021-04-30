@@ -1,0 +1,12 @@
+.postListItem {
+  font-size: 1.25rem;
+}
+
+.label {
+  display: block;
+  line-height: 35px;
+  user-select: none;
+  transition: 0.5s all;
+  word-break: break-all;
+}
+
