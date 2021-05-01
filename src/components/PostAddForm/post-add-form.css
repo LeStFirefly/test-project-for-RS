@@ -1,0 +1,14 @@
+.form {
+    width: 90vw;
+    height: 10vh;
+    padding: 5vh 5vw; 
+    display: flex;
+}
+
+.textArea {
+    width: 70%;
+}
+
+.submitButton {
+    width: 30%;
+}

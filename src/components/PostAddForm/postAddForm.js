@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {Component} from 'react';
 import './post-add-form.css';
 
-class PostAddForm extends React.Component {
+class PostAddForm extends Component {
     state = {
             text : ''
         }
@@ -10,10 +10,10 @@ class PostAddForm extends React.Component {
         this.setState({text : e.target.value})
     }
     
-    onSubmit = (e) => {
+    onSubmit = (e) => {    
         e.preventDefault();
         this.props.onAdd(this.state.text);
-        this.setState({text : ''})
+        this.setState({text : ''});
     }
     
     render() {
@@ -21,12 +21,12 @@ class PostAddForm extends React.Component {
             <form 
                 className = 'form'
                 onSubmit = {this.onSubmit}>
-                <input
-                    type = 'text'
+                <textarea
                     placeholder = 'О чем вы думаете сейчас?'
                     className = 'textArea'
                     onChange = {this.onValueChange}
                     value = {this.state.text}
+                    autoFocus
                 />
                 <button 
                     type = 'submit'

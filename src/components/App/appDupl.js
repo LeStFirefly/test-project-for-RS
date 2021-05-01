@@ -25,10 +25,10 @@ export default class App extends Component {
             {label : 'I want to sleep...', id : 16},
             {label : 'I want to sleep...', id : 17}
         ],
-        scrollY: 0,
         frame: true,
         initialPoint: 0,
         finalPoint: 0,
+        scrollY: 0
     }
 
     addItem = (body) => {  
@@ -47,10 +47,7 @@ export default class App extends Component {
                 }
             })
         } 
-    }
-
-    setScroll = (scroll) => {
-        this.setState({scrollY:scroll});
+        
     }
 
     startSwipe = (event) => {
@@ -65,11 +62,12 @@ export default class App extends Component {
     }
 
     updatePage = () => {
+
         const {initialPoint, finalPoint, frame} = this.state;
 
         const xDif = Math.abs(finalPoint.pageX - initialPoint.pageX); 
         
-        if (xDif > 50) {
+        if (xDif > 30) {
             if (frame & finalPoint.pageX<initialPoint.pageX) {
                 this.setState({
                     frame: !frame
@@ -81,17 +79,56 @@ export default class App extends Component {
             }
         }
     }
-
+    componentDidMount() {
+        if (this.state.frame) {
+            console.log('создан'+this.state.scrollY);
+            window.scrollTo(0,this.state.scrollY)
+            console.log('done');
+            window.addEventListener('scroll', this.listenToScroll);
+        }        
+    }
     componentDidUpdate(prevFrame) {
         if (this.state.frame !== prevFrame.frame) {
             this.updatePage();
         }
     }
 
-    render() {
-        const {frame} = this.state;
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.listenToScroll);
+        console.log('уничтожен'+this.state.scrollY)
+    }
 
-        const content = frame ? <PostSection startSwipe={this.startSwipe} endSwipe={this.endSwipe} data={this.state.data} scrollY={this.state.scrollY} setScroll={this.setScroll} onAdd={this.addItem}/> : <TimeSection startSwipe={this.startSwipe} endSwipe={this.endSwipe}/>;
+    listenToScroll = () => {
+        if (this.state.frame) {
+            const scroll = window.pageYOffset;
+            this.setState({
+              scrollY: scroll,
+            })
+            console.log(this.state.scrollY);
+        }
+      }
+
+    render() {
+        const {data, frame} = this.state;
+
+        const postSection = (
+            <>
+                <PostAddForm 
+                onAdd = {this.addItem}/>
+                <div className='SwipeZone' onTouchStart={event => this.startSwipe(event)} onTouchEnd={event => this.endSwipe(event)}>
+                    <PostList posts={data}/>
+                </div>
+            </>
+        );
+
+        const timeSection = (
+            <div className='SwipeZone' onTouchStart={event => this.startSwipe(event)} onTouchEnd={event => this.endSwipe(event)}>
+                <Time/>
+            </div>
+        );
+
+
+        const content = frame ? postSection : timeSection;
         
         return(
             <div className = 'app'>
@@ -101,46 +138,4 @@ export default class App extends Component {
 
     }
 
-}
-
-class PostSection extends Component {
-
-
-    componentDidMount() {
-        window.scrollTo(0,this.props.scrollY)
-        window.addEventListener('scroll', this.listenToScroll);      
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('scroll', this.listenToScroll);
-    }
-
-    listenToScroll = () => {
-        const scroll = window.pageYOffset;
-        this.props.setScroll(scroll);
-    }
-
-    render() {
-        const {data} = this.props;
-
-        return (
-            <>
-            <PostAddForm 
-            onAdd = {this.props.onAdd}/>
-            <div className='SwipeZone' onTouchStart={event => this.props.startSwipe(event)} onTouchEnd={event => this.props.endSwipe(event)}>
-                <PostList posts={data}/>
-            </div>
-        </>
-        )
-
-    }
-}
-class TimeSection extends Component{
-    render() {
-        return (
-            <div className='SwipeZone' onTouchStart={event => this.props.startSwipe(event)} onTouchEnd={event => this.props.endSwipe(event)}>
-                <Time/>
-            </div>
-        )
-    }
 }

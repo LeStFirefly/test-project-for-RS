@@ -9,7 +9,6 @@ const PostList = ({posts}) => {
             <li key={post.id} className = 'listItem'>
                 <PostListItem 
                 label= {post.label} 
-                important = {post.important}
                 />
             </li>
         ) 
