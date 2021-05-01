@@ -3,15 +3,22 @@ import './post-list-item.css';
 
 class PostListItem extends Component {
     state = {
-        currentLetter: 0
+        currentLetter: 0,
+        animate: true
     }
 
     componentDidMount() {
-            this.addLetter();
+        this.addLetter();
+        if (!this.props.animation) {
+            const source = document.querySelectorAll('.label')[this.props.id-1];
+            source.style.display = 'block';
+            const newSpan = document.querySelectorAll('.animatedLabel')[this.props.id-1];
+            newSpan.style.display = 'none';
+        }
     }
 
     addLetter = () => {
-        if (this.props.animation) {
+        if (this.props.animation & this.state.animate) {
             const source = document.querySelectorAll('.label')[this.props.id-1];
             const newSpan = document.querySelectorAll('.animatedLabel')[this.props.id-1];
             let currentLetter = this.state.currentLetter;
@@ -33,10 +40,13 @@ class PostListItem extends Component {
             } 
             
             if(this.state.currentLetter===this.props.label.length) {
-                console.log('stop animate');
-                //this.props.changeStatus(id);
+                this.props.changeStatus(id);
             }
         }  
+    }
+
+    componentWillUnmount() {
+        this.setState({animate:false});
     }
         
 

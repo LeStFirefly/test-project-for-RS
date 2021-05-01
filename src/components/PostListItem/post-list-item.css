@@ -2,12 +2,14 @@
   font-size: 1.25rem;
 }
 
-.animatedLabel {
-  display: block;
+.animatedLabel, .label{
   line-height: 35px;
   user-select: none;
   transition: 0.5s all;
   word-break: break-all;
+}
+
+.postListItem {
   margin-bottom: 20px;
 }
 

@@ -4,10 +4,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #eaf5fc;
+  background-color: white;
   margin: 0 auto;
-  display: flex;
-  justify-content: center;
 }
 
 code {

@@ -28,7 +28,7 @@ class PostAddForm extends Component {
                     value = {this.state.text}
                     autoFocus
                 />
-                <button 
+                <button color="info"
                     type = 'submit'
                     className = 'submitButton'>
                     Отправить

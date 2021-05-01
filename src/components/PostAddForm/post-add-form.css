@@ -11,4 +11,12 @@
 
 .submitButton {
     width: 30%;
+    background-color: #008CBA;
+    border: none;
+    border-radius: 0 10% 10% 0;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
 }

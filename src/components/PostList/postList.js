@@ -1,26 +1,29 @@
-import React from 'react';
+import React, {Component} from 'react';
 import './post-list.css';
 import PostListItem from '../PostListItem';
 
-const PostList = ({posts}) => {
+export default class PostList extends Component {
+    
+    render() {
+        const {posts} = this.props;
 
-    const elements = posts.map((post) => {
+        const elements = posts.map((post) => {
+            return(
+                <li key={post.id} className = 'listItem'>
+                    <PostListItem 
+                    label= {post.label} 
+                    animation = {post.animation}
+                    id = {post.id}
+                    changeStatus = {(id) => this.props.changeStatus(id)}
+                    />
+                </li>
+            ) 
+        })
+
         return(
-            <li key={post.id} className = 'listItem'>
-                <PostListItem 
-                label= {post.label} 
-                animation = {post.animation}
-                id = {post.id}
-                changeStatus = {(id) => this.props.changeStatus(id)}
-                />
-            </li>
-        ) 
-    })
-    return(
-        <ul className = 'list'>
-            {elements}
-        </ul>
-    )
+            <ul className = 'list'>
+                {elements}
+            </ul>
+        )
+    }   
 }
-
-export default PostList;

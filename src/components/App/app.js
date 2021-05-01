@@ -51,18 +51,21 @@ export default class App extends Component {
     }
 
     changeAnimationStatus = (id) => {
-        let changedItem = this.state.data[id-1];
-        console.log(changedItem);
-        changedItem.animation = false;
-        
-        this.setState(({data}) => {
-            const newArr = [...data, changedItem];
-            
-            return {
-                data : newArr,
-            }
-        })
-
+        if (this.state.data[id-1].animation) {
+            let changedItem = this.state.data[id-1];
+            changedItem.animation = false;
+            this.setState(({data}) => {
+                const newArr = [
+                    ...data.slice(0,id-1),
+                    changedItem,
+                    ...data.slice(id)
+                ];
+       
+                return {
+                    data : newArr,
+                }
+            })
+        } 
     }
 
     setScroll = (scroll) => {
@@ -108,7 +111,7 @@ export default class App extends Component {
         const {frame} = this.state;
 
         const content = frame ? 
-        <PostSection startSwipe={this.startSwipe} endSwipe={this.endSwipe} data={this.state.data} scrollY={this.state.scrollY} setScroll={this.setScroll} onAdd={this.addItem} changeAnimationStatus={this.changeAnimationStatus}/>
+        <PostSection startSwipe={this.startSwipe} endSwipe={this.endSwipe} data={this.state.data} scrollY={this.state.scrollY} setScroll={this.setScroll} onAdd={this.addItem} changeStatus={this.changeAnimationStatus}/>
         : <TimeSection startSwipe={this.startSwipe} endSwipe={this.endSwipe}/>;
         
         return(
@@ -146,7 +149,7 @@ class PostSection extends Component {
             <PostAddForm 
             onAdd = {this.props.onAdd}/>
             <div className='SwipeZone' onTouchStart={event => this.props.startSwipe(event)} onTouchEnd={event => this.props.endSwipe(event)}>
-                <PostList posts={data} changeStatus={this.props.changeAnimationStatus}/>
+                <PostList posts={data} changeStatus={(id) => this.props.changeStatus(id)}/>
             </div>
         </>
         )
