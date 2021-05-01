@@ -7,12 +7,12 @@ import Time from '../Time';
 export default class App extends Component {
     state = {
         data : [
-            {label : 'Going to learn React', id : 1},
-            {label : 'That is so good!', id : 2},
-            {label : 'I want to sleep...', id : 3},
-            {label : 'I want to sleep...', id : 4},
-            {label : 'I want to sleep...', id : 5},
-            {label : 'I want to sleep...', id : 6},
+            {label : 'Going to learn React', id : 1, animation: true},
+            {label : 'That is so good!', id : 2, animation: true},
+            {label : 'I want to sleep...', id : 3, animation: true},
+            {label : 'I want to sleep...', id : 4, animation: true},
+            {label : 'I want to sleep...', id : 5, animation: true},
+/*             {label : 'I want to sleep...', id : 6},
             {label : 'I want to sleep...', id : 7},
             {label : 'I want to sleep...', id : 8},
             {label : 'I want to sleep...', id : 9},
@@ -23,7 +23,7 @@ export default class App extends Component {
             {label : 'I want to sleep...', id : 14},
             {label : 'I want to sleep...', id : 15},
             {label : 'I want to sleep...', id : 16},
-            {label : 'I want to sleep...', id : 17}
+            {label : 'I want to sleep...', id : 17} */
         ],
         scrollY: 0,
         frame: true,
@@ -36,7 +36,8 @@ export default class App extends Component {
         if (body !== '') {
             const newItem = {
                 label : body,
-                id: ++maxId
+                id: ++maxId,
+                animation: true
             }
             
             this.setState(({data}) => {
@@ -47,6 +48,21 @@ export default class App extends Component {
                 }
             })
         } 
+    }
+
+    changeAnimationStatus = (id) => {
+        let changedItem = this.state.data[id-1];
+        console.log(changedItem);
+        changedItem.animation = false;
+        
+        this.setState(({data}) => {
+            const newArr = [...data, changedItem];
+            
+            return {
+                data : newArr,
+            }
+        })
+
     }
 
     setScroll = (scroll) => {
@@ -91,7 +107,9 @@ export default class App extends Component {
     render() {
         const {frame} = this.state;
 
-        const content = frame ? <PostSection startSwipe={this.startSwipe} endSwipe={this.endSwipe} data={this.state.data} scrollY={this.state.scrollY} setScroll={this.setScroll} onAdd={this.addItem}/> : <TimeSection startSwipe={this.startSwipe} endSwipe={this.endSwipe}/>;
+        const content = frame ? 
+        <PostSection startSwipe={this.startSwipe} endSwipe={this.endSwipe} data={this.state.data} scrollY={this.state.scrollY} setScroll={this.setScroll} onAdd={this.addItem} changeAnimationStatus={this.changeAnimationStatus}/>
+        : <TimeSection startSwipe={this.startSwipe} endSwipe={this.endSwipe}/>;
         
         return(
             <div className = 'app'>
@@ -128,7 +146,7 @@ class PostSection extends Component {
             <PostAddForm 
             onAdd = {this.props.onAdd}/>
             <div className='SwipeZone' onTouchStart={event => this.props.startSwipe(event)} onTouchEnd={event => this.props.endSwipe(event)}>
-                <PostList posts={data}/>
+                <PostList posts={data} changeStatus={this.props.changeAnimationStatus}/>
             </div>
         </>
         )

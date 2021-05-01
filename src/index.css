@@ -6,6 +6,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: #eaf5fc;
   margin: 0 auto;
+  display: flex;
+  justify-content: center;
 }
 
 code {

@@ -9,6 +9,9 @@ const PostList = ({posts}) => {
             <li key={post.id} className = 'listItem'>
                 <PostListItem 
                 label= {post.label} 
+                animation = {post.animation}
+                id = {post.id}
+                changeStatus = {(id) => this.props.changeStatus(id)}
                 />
             </li>
         ) 
